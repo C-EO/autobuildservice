@@ -41,13 +41,18 @@ jobs:
           npm run build:arm32
           echo "DEB=$(basename build/freetube*armv7l.deb)" >> $GITHUB_ENV
           echo "RPM=$(basename build/freetube*.armv7l.rpm)" >> $GITHUB_ENV
-          echo "" >> $GITHUB_ENV
+          echo "APK=$(basename build/freetube*armv7l.apk)" >> $GITHUB_ENV
+          echo "PACMAN=$(basename build/freetube*armv7l.pacman)" >> $GITHUB_ENV
+          echo "APPIMAGE=$(basename build/FreeTube*armv7l.AppImage)" >> $GITHUB_ENV
       - name: prepare-upload
         run: |
           cd $DIR/
           mkdir freetube-armv7l_$DATE/
           mv FreeTube/build/$DEB freetube-armv7l_$DATE/
           mv FreeTube/build/$RPM freetube-armv7l_$DATE/
+          mv FreeTube/build/$APK freetube-armv7l_$DATE/
+          mv FreeTube/build/$PACMAN freetube-armv7l_$DATE/
+          mv FreeTube/build/$APPIMAGE freetube-armv7l_$DATE/
       - name: upload
         uses: actions/upload-artifact@v2
         with:
