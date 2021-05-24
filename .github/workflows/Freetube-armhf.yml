@@ -38,9 +38,8 @@ jobs:
       - name: Build
         run: |
           cd $DIR/FreeTube
-          pip install -r requirements.txt
-          make electron-develop
-          USE_SYSTEM_FPM=true make electron-build
+          npm install
+          npm run build:arm32
           echo "DEB=$(basename dist/freetube_*_armv7l.deb)" >> $GITHUB_ENV
       - name: prepare-upload
         run: |
