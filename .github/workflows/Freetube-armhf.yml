@@ -1,4 +1,4 @@
-name: Freetube-armhf
+name: build-freetube-armhf
 
 on:
   push:
