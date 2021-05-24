@@ -1,10 +1,7 @@
-name: Freetube-armhf
+name: build-freetube-armhf
 
 on:
   push:
-    branches: [ master ]
-    paths-ignore: [README.md]
-  pull_request:
     branches: [ master ]
     paths-ignore: [README.md]
 
@@ -24,15 +21,17 @@ jobs:
       - name: Install Dependencies
         run: |
           sudo apt update
-          sudo apt -y install git python gcc g++ make libx11-dev libxkbfile-dev fakeroot rpm libsecret-1-dev jq python2.7-dev python3-pip python-setuptools libudev-dev ruby-dev
-          sudo gem install fpm -v 1.10.2 --no-document
-          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+          sudo apt install -y libarchive-tools
+          wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
           export NVM_DIR="$HOME/.nvm"
           [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
           [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-      - name: clone etcher repo and checkout latest release
+          nvm install --lts
+          nvm use --lts
+      - name: clone freetube repo and checkout latest release
         run: |
           cd $DIR
+          rm -rf FreeTube
           git clone --recursive https://github.com/FreeTubeApp/FreeTube
           cd FreeTube
       - name: Build
@@ -40,12 +39,20 @@ jobs:
           cd $DIR/FreeTube
           npm install
           npm run build:arm32
-          echo "DEB=$(basename dist/freetube_*_armv7l.deb)" >> $GITHUB_ENV
+          echo "DEB=$(basename build/freetube*armv7l.deb)" >> $GITHUB_ENV
+          echo "RPM=$(basename build/freetube*.armv7l.rpm)" >> $GITHUB_ENV
+          echo "APK=$(basename build/freetube*armv7l.apk)" >> $GITHUB_ENV
+          echo "PACMAN=$(basename build/freetube*armv7l.pacman)" >> $GITHUB_ENV
+          echo "APPIMAGE=$(basename build/FreeTube*armv7l.AppImage)" >> $GITHUB_ENV
       - name: prepare-upload
         run: |
           cd $DIR/
           mkdir freetube-armv7l_$DATE/
-          mv FreeTube/dist/$DEB freetube-armv7l_$DATE/
+          mv FreeTube/build/$DEB freetube-armv7l_$DATE/
+          mv FreeTube/build/$RPM freetube-armv7l_$DATE/
+          mv FreeTube/build/$APK freetube-armv7l_$DATE/
+          mv FreeTube/build/$PACMAN freetube-armv7l_$DATE/
+          mv FreeTube/build/$APPIMAGE freetube-armv7l_$DATE/
       - name: upload
         uses: actions/upload-artifact@v2
         with:
