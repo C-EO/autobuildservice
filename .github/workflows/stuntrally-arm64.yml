@@ -31,7 +31,7 @@ jobs:
             apt install libmygui-dev -y
             apt install libsdl2-dev -y
             apt install libogg-dev -y
-            apt install libvorbis-dev -y
+            apt install libvorbis-dev cmake -y
             apt install libenet-dev -y
             apt install libopenal-dev -y
             apt install libbullet-dev -y
