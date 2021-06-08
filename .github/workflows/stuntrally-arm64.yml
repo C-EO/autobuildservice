@@ -20,19 +20,19 @@ jobs:
           distribution: ubuntu20.04
           run: |
             export DEBIAN_FRONTEND=noninteractive
-            sudo apt-get update
-            sudo apt install git zip -y
-            sudo apt install build-essential -y
-            sudo apt install libboost-wave-dev -y
-            sudo apt install libboost-system-dev -y
-            sudo apt install libboost-filesystem-dev -y
-            sudo apt install libboost-thread-dev -y
-            sudo apt install libogre-1.9-dev -y
-            sudo apt install libmygui-dev -y
-            sudo apt install libsdl2-dev -y
-            sudo apt install libogg-dev -y
-            sudo apt install libvorbis-dev -y
-            sudo apt install libenet-dev -y
+            apt-get update
+            apt install git zip -y
+            apt install build-essential -y
+            apt install libboost-wave-dev -y
+            apt install libboost-system-dev -y
+            apt install libboost-filesystem-dev -y
+            apt install libboost-thread-dev -y
+            apt install libogre-1.9-dev -y
+            apt install libmygui-dev -y
+            apt install libsdl2-dev -y
+            apt install libogg-dev -y
+            apt install libvorbis-dev -y
+            apt install libenet-dev -y
             sudo apt install libopenal-dev -y
             sudo apt install libbullet-dev -y
             sudo apt install libbullet-extras-dev -y
@@ -60,5 +60,5 @@ jobs:
       - name: upload
         uses: actions/upload-artifact@v2
         with:
-          name: etcher-arm64_${{ env.DATE }}
+          name: stuntrally-arm64_${{ env.DATE }}
           path: ${{ env.DIR }}/stuntrally-arm64_${{ env.DATE }}/
