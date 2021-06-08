@@ -1,6 +1,8 @@
 name: build-freetube-armhf
 
 on:
+  schedule:
+    - cron: '0 21 * * *'
   workflow_dispatch:
 
 jobs:
