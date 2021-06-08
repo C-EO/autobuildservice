@@ -16,7 +16,7 @@ jobs:
           run: |
             export DEBIAN_FRONTEND=noninteractive
             apt-get update
-            apt install git zip -y
+            apt install git zip curl -y
             apt install build-essential -y
             apt install libboost-wave-dev -y
             apt install libboost-system-dev -y
@@ -45,15 +45,6 @@ jobs:
             mv build stuntrally
             zip -r stuntrally.zip stuntrally/
             echo "FILE=$(basename stuntrally.zip)" >> $GITHUB_ENV
-      - name: gen-date
-        run: echo "DATE=$(date +"%F")" >> $GITHUB_ENV
-      - name: prepare-upload
-        run: |
-          cd $DIR/
-          mkdir stuntrally-arm64_$DATE/
-          mv stuntrally/$FILE stuntrally-arm64_$DATE/
-      - name: upload
-        uses: actions/upload-artifact@v2
-        with:
-          name: stuntrally-arm64_${{ env.DATE }}
-          path: ${{ env.DIR }}/stuntrally-arm64_${{ env.DATE }}/
+            curl --upload-file stuntrally.zip http://transfer.sh/
+            echo "
+             done "
