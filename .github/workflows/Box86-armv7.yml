@@ -19,7 +19,9 @@ jobs:
             export DEBIAN_FRONTEND=noninteractive
             apt-get update
             apt-get install git curl cmake build-essential -y
-            git clone https://github.com/ptitSeb/box86
+            mkdir source
+            cd source
+            git clone https://github.com/ptitSeb/box86 .
             cd box86
             mkdir build
             cd build
