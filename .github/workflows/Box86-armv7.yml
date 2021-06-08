@@ -18,7 +18,7 @@ jobs:
           run: |
             export DEBIAN_FRONTEND=noninteractive
             apt-get update
-            apt-get install git curl cmake build-essential -y
+            apt-get install git curl cmake build-essential python3 -y
             mkdir source
             cd source
             git clone https://github.com/ptitSeb/box86 .
