@@ -8,7 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: box86
+    name: box86-armv7l
     steps:
       - uses: actions/checkout@v2
       - uses: darsvador/run-on-arch-action@v1.0.10
