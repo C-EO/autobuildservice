@@ -1,0 +1,46 @@
+name: Build-arm64
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore: [README.md]
+  pull_request:
+    branches: [ main ]
+    paths-ignore: [README.md]
+
+jobs:
+  build-arm64:
+    runs-on: ubuntu-latest
+    name: Build-arm64 
+    steps:
+      - uses: actions/checkout@v2
+      - uses: darsvador/run-on-arch-action@v1.0.10
+        with:
+          architecture: aarch64
+          distribution: ubuntu20.04
+          run: |
+            DEBIAN_FRONTEND=noninteractive apt update
+            DEBIAN_FRONTEND=noninteractive apt install -y git python gcc g++ make libx11-dev libxkbfile-dev fakeroot rpm libsecret-1-dev jq python2.7-dev python-pip python-setuptools libudev-dev ruby-dev
+            git clone --recursive https://github.com/balena-io/etcher
+            cd etcher
+            git checkout git checkout $(git describe --abbrev=0 --tags)
+            pip install -r requirements.txt
+            make electron-develop
+            USE_SYSTEM_FPM="true" make electron-build
+            echo "DEB=$(basename dist/balena-etcher-electron_${{ env.TAG }}_arm64.deb)" >> $GITHUB_ENV
+            echo "RPM=$(basename dist/balena-etcher-electron-${{ env.TAG }}.aarch64.rpm)" >> $GITHUB_ENV
+            echo "APPIMAGE=$(basename dist/balenaEtcher-${{ env.TAG }}-arm64.AppImage)" >> $GITHUB_ENV
+      - name: gen-date
+        run: echo "DATE=$(date +"%F")" >> $GITHUB_ENV
+      - name: prepare-upload
+        run: |
+          cd $DIR/
+          mkdir etcher-arm64_$DATE/
+          mv etcher/dist/$DEB etcher-arm64_$DATE/
+          mv etcher/dist/$RPM etcher-arm64_$DATE/
+          mv etcher/dist/$APPIMAGE etcher-arm64_$DATE/
+      - name: upload
+        uses: actions/upload-artifact@v2
+        with:
+          name: etcher-arm64_${{ env.DATE }}
+          path: ${{ env.DIR }}/etcher-arm64_${{ env.DATE }}/
