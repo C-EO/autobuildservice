@@ -1,6 +1,8 @@
 name: stuntrally-arm32
 
 on:
+  schedule:
+    - cron: '0 21 * * *'
   workflow_dispatch:
 
 jobs:
