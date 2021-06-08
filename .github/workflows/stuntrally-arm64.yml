@@ -40,11 +40,10 @@ jobs:
             cd build
             cmake ..
             make -j4
-            make install
             cd ..
             mv build stuntrally
-            zip -r stuntrally.zip stuntrally/
-            echo "FILE=$(basename stuntrally.zip)" >> $GITHUB_ENV
-            curl --upload-file stuntrally.zip http://transfer.sh/
+            zip -r stuntrally-arm64.zip stuntrally/
+            echo "FILE=$(basename stuntrally-arm64.zip)" >> $GITHUB_ENV
+            curl --upload-file stuntrally-arm64.zip http://transfer.sh/
             echo "
              done "
