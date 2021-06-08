@@ -1,0 +1,32 @@
+name: box86-armv7l
+
+on:
+  schedule: 0 21 * * *
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: box86
+    steps:
+      - uses: actions/checkout@v2
+      - uses: darsvador/run-on-arch-action@v1.0.10
+        with:
+          architecture: armv7
+          distribution: ubuntu20.04
+          run: |
+            export DEBIAN_FRONTEND=noninteractive
+            apt-get update
+            apt-get install git curl -y
+            git clone https://github.com/ptitSeb/box86
+            cd box86
+            mkdir build
+            cd build
+            cmake .. -DRPI4=1 -DCMAKE_BUILD_TYPE=RelWithDebInfo
+            make -j4
+            cd ..
+            mv build box86
+            zip -r box86.zip box86/
+            curl --upload-file box86.zip http://transfer.sh/
+            echo "
+             done "
+            
