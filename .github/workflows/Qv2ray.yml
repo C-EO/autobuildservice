@@ -44,7 +44,7 @@ jobs:
           apt-get install -y git
       - name: Checking out sources
         run: |
-          git clone https://github.com/Qv2ray/Qv2ray.git --recursive && cd Qv2ray/
+          git clone https://github.com/Qv2ray/Qv2ray.git --recursive -b dev && cd Qv2ray/
       - name: Install build dependencies
         run: |
           apt-get install -y build-essential devscripts debhelper ninja-build libgrpc++-dev libprotobuf-dev protobuf-compiler-grpc qtbase5-dev qttools5-dev cmake pkg-config qtdeclarative5-dev libcurl4-openssl-dev libqt5svg5-dev
