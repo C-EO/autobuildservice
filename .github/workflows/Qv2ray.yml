@@ -47,6 +47,7 @@ jobs:
         with: 
           name: Qv2ray/Qv2ray
           ref: dev
+          submodules: "recursive"
       - name: Install build dependencies
         run: |
           apt-get install -y build-essential devscripts debhelper ninja-build libgrpc++-dev libprotobuf-dev protobuf-compiler-grpc qtbase5-dev qttools5-dev cmake pkg-config qtdeclarative5-dev libcurl4-openssl-dev libqt5svg5-dev
@@ -96,6 +97,8 @@ jobs:
       - name: Checking out sources
         uses: actions/checkout@v2
         with:
+          name: Qv2ray
+          ref: dev
           submodules: "recursive"
       - name: Install build dependencies
         run: |
