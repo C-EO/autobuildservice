@@ -1,8 +1,10 @@
 name: box86-armv7l
 
 on:
-  schedule: 0 21 * * *
-
+  schedule:
+    - cron: '0 21 * * *'
+  workflow_dispatch:
+  
 jobs:
   build:
     runs-on: ubuntu-latest
