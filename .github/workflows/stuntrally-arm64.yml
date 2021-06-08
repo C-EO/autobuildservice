@@ -33,9 +33,9 @@ jobs:
             apt install libogg-dev -y
             apt install libvorbis-dev -y
             apt install libenet-dev -y
-            sudo apt install libopenal-dev -y
-            sudo apt install libbullet-dev -y
-            sudo apt install libbullet-extras-dev -y
+            apt install libopenal-dev -y
+            apt install libbullet-dev -y
+            apt install libbullet-extras-dev -y
             git clone --depth=1 git://github.com/stuntrally/stuntrally.git stuntrally
             git clone --depth=1 git://github.com/stuntrally/stuntrally.git stuntrally
             cd stuntrally/data
@@ -45,7 +45,7 @@ jobs:
             cd build
             cmake ..
             make -j4
-            sudo make install
+            make install
             cd ..
             mv build stuntrally
             zip -r stuntrally.zip stuntrally/
