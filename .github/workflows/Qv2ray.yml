@@ -51,6 +51,7 @@ jobs:
       - name: Patching source code
         if: matrix.distro == 'stable'
         run: |
+          cd Qv2ray
           patch -p1 < debian/0001-add-missing-macro.patch
       - name: Bump version
         if: github.event_name != 'release'
