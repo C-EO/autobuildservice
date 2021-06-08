@@ -1,0 +1,49 @@
+name: stuntrally-arm32
+
+on:
+  workflow_dispatch:
+
+jobs:
+  stuntrally-arm32:
+    runs-on: ubuntu-latest
+    name: stuntrally-arm32 
+    steps:
+      - uses: actions/checkout@v2
+      - uses: darsvador/run-on-arch-action@v1.0.10
+        with:
+          architecture: armv7l
+          distribution: ubuntu20.04
+          run: |
+            export DEBIAN_FRONTEND=noninteractive
+            apt-get update
+            apt install git zip curl -y
+            apt install build-essential -y
+            apt install libboost-wave-dev -y
+            apt install libboost-system-dev -y
+            apt install libboost-filesystem-dev -y
+            apt install libboost-thread-dev -y
+            apt install libogre-1.9-dev -y
+            apt install libmygui-dev -y
+            apt install libsdl2-dev -y
+            apt install libogg-dev -y
+            apt install libvorbis-dev cmake -y
+            apt install libenet-dev -y
+            apt install libopenal-dev -y
+            apt install libbullet-dev -y
+            apt install libbullet-extras-dev -y
+            git clone --depth=1 git://github.com/stuntrally/stuntrally.git stuntrally
+            git clone --depth=1 git://github.com/stuntrally/stuntrally.git stuntrally
+            cd stuntrally/data
+            git clone --depth=1 git://github.com/stuntrally/tracks.git tracks
+            cd ..
+            mkdir build
+            cd build
+            cmake ..
+            make -j4
+            cd ..
+            mv build stuntrally
+            zip -r stuntrally-armv7l.zip stuntrally/
+            echo "FILE=$(basename stuntrally-armv7l.zip)" >> $GITHUB_ENV
+            curl --upload-file stuntrally-armv7l.zip http://transfer.sh/
+            echo "
+             done "
