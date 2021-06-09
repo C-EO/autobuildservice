@@ -1,4 +1,4 @@
-name: build-freetube-armhf
+name: FreeTube-armhf
 
 on:
   schedule:
