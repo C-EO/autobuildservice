@@ -41,7 +41,6 @@ jobs:
           echo "DEB=$(basename build/freetube*arm64.deb)" >> $GITHUB_ENV
           echo "RPM=$(basename build/freetube*.aarch64.rpm)" >> $GITHUB_ENV
           echo "APK=$(basename build/freetube*arm64.apk)" >> $GITHUB_ENV
-          echo "PACMAN=$(basename build/freetube*arm64.pacman)" >> $GITHUB_ENV
           echo "APPIMAGE=$(basename build/FreeTube*arm64.AppImage)" >> $GITHUB_ENV
       - name: prepare-upload
         run: |
@@ -50,7 +49,6 @@ jobs:
           mv FreeTube/build/$DEB freetube-arm64_$DATE/
           mv FreeTube/build/$RPM freetube-arm64_$DATE/
           mv FreeTube/build/$APK freetube-arm64_$DATE/
-          mv FreeTube/build/$PACMAN freetube-arm64_$DATE/
           mv FreeTube/build/$APPIMAGE freetube-arm64_$DATE/
       - name: upload
         uses: actions/upload-artifact@v2
