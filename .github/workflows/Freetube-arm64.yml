@@ -1,4 +1,4 @@
-name: FreeTube-armhf
+name: FreeTube-arm64
 
 on:
   schedule:
