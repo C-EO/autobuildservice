@@ -1,0 +1,3 @@
+[submodule "weekly-box86-debs"]
+	path = weekly-box86-debs
+	url = https://github.com/Itai-Nelken/weekly-box86-debs.git
