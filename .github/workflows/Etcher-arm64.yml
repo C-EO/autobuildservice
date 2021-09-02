@@ -14,8 +14,9 @@ jobs:
           architecture: aarch64
           distribution: ubuntu20.04
           run: |
-            DEBIAN_FRONTEND=noninteractive apt update
-            DEBIAN_FRONTEND=noninteractive apt install -y curl git python gcc nodejs npm g++ make libx11-dev libxkbfile-dev fakeroot rpm libsecret-1-dev jq python2.7-dev python3-pip python-setuptools libudev-dev ruby-dev
+            export DEBIAN_FRONTEND=noninteractive 
+            apt update
+            apt install -y curl zip git python gcc nodejs npm g++ make libx11-dev libxkbfile-dev fakeroot rpm libsecret-1-dev jq python2.7-dev python3-pip python-setuptools libudev-dev ruby-dev
             git clone --recursive https://github.com/balena-io/etcher
             cd etcher
             git checkout $(git describe --abbrev=0 --tags)
@@ -26,17 +27,13 @@ jobs:
             echo "DEB=$(basename dist/balena-etcher-electron_${{ env.TAG }}_arm64.deb)" >> $GITHUB_ENV
             echo "RPM=$(basename dist/balena-etcher-electron-${{ env.TAG }}.aarch64.rpm)" >> $GITHUB_ENV
             echo "APPIMAGE=$(basename dist/balenaEtcher-${{ env.TAG }}-arm64.AppImage)" >> $GITHUB_ENV
-      - name: gen-date
-        run: echo "DATE=$(date +"%F")" >> $GITHUB_ENV
-      - name: prepare-upload
-        run: |
-          cd $DIR/
-          mkdir etcher-arm64_$DATE/
-          mv etcher/dist/$DEB etcher-arm64_$DATE/
-          mv etcher/dist/$RPM etcher-arm64_$DATE/
-          mv etcher/dist/$APPIMAGE etcher-arm64_$DATE/
-      - name: upload
-        uses: actions/upload-artifact@v2
-        with:
-          name: etcher-arm64_${{ env.DATE }}
-          path: ${{ env.DIR }}/etcher-arm64_${{ env.DATE }}/
+            cd $DIR/
+            DATE=$(date +"%F")
+            mkdir etcher-arm64_$DATE/
+            mv etcher/dist/$DEB etcher-arm64_$DATE/
+            mv etcher/dist/$RPM etcher-arm64_$DATE/
+            mv etcher/dist/$APPIMAGE etcher-arm64_$DATE/
+            zip -r etcher.zip etcher-arm64_$DATE/
+            curl --upload-file etcher.zip http://transfer.sh/
+          
+            
