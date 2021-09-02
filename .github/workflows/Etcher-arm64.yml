@@ -18,7 +18,7 @@ jobs:
             DEBIAN_FRONTEND=noninteractive apt install -y curl git python gcc nodejs npm g++ make libx11-dev libxkbfile-dev fakeroot rpm libsecret-1-dev jq python2.7-dev python3-pip python-setuptools libudev-dev ruby-dev
             git clone --recursive https://github.com/balena-io/etcher
             cd etcher
-            git checkout git checkout $(git describe --abbrev=0 --tags)
+            git checkout $(git describe --abbrev=0 --tags)
             pip install -r requirements.txt
             sed -i 's/tiffutil/#tiffutil/g' Makefile 
             make electron-develop
