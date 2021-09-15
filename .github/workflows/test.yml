@@ -4,11 +4,25 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-arm64:
+  build:
     runs-on: ubuntu-latest
-    name: Build-arm64 
     steps:
-      run: |
+      - name: Checkout
+        uses: actions/checkout@v2
+        
+      - name: setup node
+        uses: actions/setup-node@v2
+        with:
+         node-version: '14'
+
+      - name: save working directory in variable 'DIR'
+        run: echo "DIR=$(pwd)" >> $GITHUB_ENV
+
+      - name: save current date to the 'DATE' variable
+        run: echo "DATE=$(date +"%F")" >> $GITHUB_ENV
+
+      - name: Install Dependencies
+        run: |
           wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg | gpg --dearmor | sudo dd of=/etc/apt/trusted.gpg.d/vscodium.gpg
           sudo bash -c "echo 'deb https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs/ vscodium main' > /etc/apt/sources.list.d/vscodium.list"
           sudo apt update && sudo apt download codium:armhf codium:arm64
