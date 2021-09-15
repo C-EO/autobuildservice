@@ -8,12 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Build-arm64 
     steps:
-      - uses: actions/checkout@v2
-      - uses: darsvador/run-on-arch-action@v1.0.10
-        with:
-          architecture: aarch64
-          distribution: ubuntu20.04
-          run: |
-            wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg | gpg --dearmor | sudo dd of=/etc/apt/trusted.gpg.d/vscodium.gpg
-            sudo bash -c "echo 'deb https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs/ vscodium main' > /etc/apt/sources.list.d/vscodium.list"
-            sudo apt update && sudo apt download codium:armhf codium:arm64
+      run: |
+          wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg | gpg --dearmor | sudo dd of=/etc/apt/trusted.gpg.d/vscodium.gpg
+          sudo bash -c "echo 'deb https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs/ vscodium main' > /etc/apt/sources.list.d/vscodium.list"
+          sudo apt update && sudo apt download codium:armhf codium:arm64
