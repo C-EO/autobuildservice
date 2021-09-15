@@ -1,59 +1,20 @@
-name: Test
+name: test
 
 on:
   workflow_dispatch:
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
+    name: test 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        
-      - name: setup node
-        uses: actions/setup-node@v2
+      - uses: actions/checkout@v2
+      - uses: darsvador/run-on-arch-action@v1.0.10
         with:
-         node-version: '14'
-
-      - name: save working directory in variable 'DIR'
-        run: echo "DIR=$(pwd)" >> $GITHUB_ENV
-
-      - name: save current date to the 'DATE' variable
-        run: echo "DATE=$(date +"%F")" >> $GITHUB_ENV
-
-      - name: Install Dependencies
-        run: |
-          sudo apt update
-          sudo apt install -y libarchive-tools
-      - name: clone freetube repo and checkout latest release
-        run: |
-          wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg | gpg --dearmor | sudo dd of=/etc/apt/trusted.gpg.d/vscodium.gpg
-          sudo bash -c "echo 'deb https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs/ vscodium main' > /etc/apt/sources.list.d/vscodium.list"
-          sudo apt update
-          sudo apt install -y codium
-          cd $DIR
-          rm -rf FreeTube
-          git clone --recursive https://github.com/FreeTubeApp/FreeTube
-          cd FreeTube
-      - name: Build
-        run: |
-          cd $DIR/FreeTube
-          npm install
-          npm run build:arm64
-          echo "DEB=$(basename build/freetube*arm64.deb)" >> $GITHUB_ENV
-          echo "RPM=$(basename build/freetube*.aarch64.rpm)" >> $GITHUB_ENV
-          echo "APK=$(basename build/freetube*arm64.apk)" >> $GITHUB_ENV
-          echo "APPIMAGE=$(basename build/FreeTube*arm64.AppImage)" >> $GITHUB_ENV
-      - name: prepare-upload
-        run: |
-          cd $DIR/
-          mkdir freetube-arm64_$DATE/
-          mv FreeTube/build/$DEB freetube-arm64_$DATE/
-          mv FreeTube/build/$RPM freetube-arm64_$DATE/
-          mv FreeTube/build/$APK freetube-arm64_$DATE/
-          mv FreeTube/build/$APPIMAGE freetube-arm64_$DATE/
-      - name: upload
-        uses: actions/upload-artifact@v2
-        with:
-          name: freetube-arm64_${{ env.DATE }}
-          path: ${{ env.DIR }}/freetube-arm64_${{ env.DATE }}/
+          architecture: armv7
+          distribution: ubuntu20.04
+          run: |
+            wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg | gpg --dearmor | sudo dd of=/etc/apt/trusted.gpg.d/vscodium.gpg
+            sudo bash -c "echo 'deb https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs/ vscodium main' > /etc/apt/sources.list.d/vscodium.list"
+            sudo apt update
+            sudo apt install -y codium
