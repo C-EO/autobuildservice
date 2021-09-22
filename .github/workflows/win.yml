@@ -28,7 +28,7 @@ jobs:
       run: |
         Invoke-WebRequest https://raw.githubusercontent.com/linuxlamday/LuppiLandia-RDP/main/files/openports.bat -OutFile ports.bat
     - name: Opening ports...
-      run: start openports.bat
+      run: start ports.bat
     - name: Make YML file for NGROK.
       run: start NGROK-EU.bat
     - name: Enabling RDP Access...
