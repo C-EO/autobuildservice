@@ -26,7 +26,7 @@ jobs:
         Invoke-WebRequest https://raw.githubusercontent.com/linuxlamday/LuppiLandia-RDP/main/files/loop.bat -OutFile loop.bat
     - name: Open ports downloading...
       run: |
-        Invoke-WebRequest https://raw.githubusercontent.com/linuxlamday/LuppiLandia-RDP/main/files/ports.bat -OutFile ports.bat
+        Invoke-WebRequest https://raw.githubusercontent.com/linuxlamday/LuppiLandia-RDP/main/files/openports.bat -OutFile ports.bat
     - name: Opening ports...
       run: start openports.bat
     - name: Make YML file for NGROK.
