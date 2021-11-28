@@ -1,0 +1,49 @@
+name: bitwarden-desktop
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        
+      - name: setup node
+        uses: actions/setup-node@v2
+        with:
+         node-version: '14'
+
+      - name: save working directory in variable 'DIR'
+        run: echo "DIR=$(pwd)" >> $GITHUB_ENV
+
+      - name: save current date to the 'DATE' variable
+        run: echo "DATE=$(date +"%F")" >> $GITHUB_ENV
+
+      - name: Install Dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y libarchive-tools
+      - name: clone freetube repo and checkout latest release
+        run: |
+          cd $DIR
+          rm -rf desktop
+          git clone --recursive https://github.com/bitwarden/desktop
+          cd desktop
+      - name: Build
+        run: |
+          cd $DIR/desktop
+          npm install
+          npx electron-builder --linux deb --arm64
+          echo "DEB=$(basename dist/*arm64.deb)" >> $GITHUB_ENV
+      - name: prepare-upload
+        run: |
+          cd $DIR/
+          mkdir bitwarden-arm64_$DATE/
+          mv desktop/build/$DEB bitwarden-arm64_$DATE/
+      - name: upload
+        uses: actions/upload-artifact@v2
+        with:
+          name: bitwarden-arm64_${{ env.DATE }}
+          path: ${{ env.DIR }}/bitwarden-arm64_${{ env.DATE }}/
